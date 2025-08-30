@@ -14,7 +14,12 @@ export interface DemoResponse {
 }
 
 // API Base URL - Use environment variable for production, fallback to relative URL
-const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://your-render-backend-url.onrender.com/api' : '/api');
+const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://nutricare-backend.onrender.com/api' : '/api');
+
+// Debug: Log the API base URL
+console.log('Shared API Base URL:', API_BASE);
+console.log('VITE_API_URL env var:', import.meta.env.VITE_API_URL);
+console.log('PROD env var:', import.meta.env.PROD);
 
 // Helper function to get auth token
 const getAuthToken = (): string | null => {
