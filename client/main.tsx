@@ -25,6 +25,9 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Debug: Log the API URL to verify it's correct
+console.log('API URL:', import.meta.env.VITE_API_URL);
+
 const AppRoutes = () => {
   // Initialize global keyboard shortcuts
   useKeyboardShortcuts();
