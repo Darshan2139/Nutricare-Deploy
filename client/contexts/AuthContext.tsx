@@ -1,17 +1,7 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
-import {
-  User,
-  AuthResponse,
-  LoginRequest,
-  RegisterRequest,
-} from "@shared/types";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { User, LoginRequest, RegisterRequest, AuthResponse } from "@shared/types";
 import { profileAPI } from "@shared/api";
+import { API_BASE } from "@/lib/api";
 
 interface AuthContextType {
   user: User | null;
@@ -33,11 +23,9 @@ export const useAuth = () => {
   return context;
 };
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -58,7 +46,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (credentials: LoginRequest) => {
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -80,7 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const register = async (userData: RegisterRequest) => {
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(`${API_BASE}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
