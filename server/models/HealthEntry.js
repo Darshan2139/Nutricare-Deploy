@@ -1,0 +1,38 @@
+import mongoose, { Schema } from "mongoose";
+const HealthEntrySchema = new Schema({
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
+    entryDate: { type: Date, required: true },
+    age: Number,
+    height: Number,
+    weight: Number,
+    bmi: Number,
+    trimester: Number,
+    hemoglobinLevel: Number,
+    bloodSugar: Number,
+    bloodPressure: {
+        systolic: Number,
+        diastolic: Number,
+    },
+    medicalHistory: [String],
+    vitaminD: Number,
+    vitaminB12: Number,
+    vitaminA: Number,
+    vitaminC: Number,
+    calcium: Number,
+    ironLevels: {
+        serumFerritin: Number,
+        hemoglobin: Number,
+    },
+    dietPreference: String,
+    foodAllergies: [String],
+    religiousCulturalRestrictions: [String],
+    activityLevel: String,
+    sleepHours: Number,
+    waterIntake: Number,
+    isMultiple: Boolean,
+    multipleType: String,
+    isHighRisk: Boolean,
+    currentSupplements: [String],
+    notes: String,
+}, { timestamps: true });
+export default mongoose.models.HealthEntry || mongoose.model("HealthEntry", HealthEntrySchema);
