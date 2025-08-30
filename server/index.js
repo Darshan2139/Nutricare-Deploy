@@ -88,6 +88,71 @@ app.get("/api/auth/profile", (req, res) => {
   });
 });
 
+// User profile endpoints (to fix 405 errors)
+app.get("/api/users/me", (req, res) => {
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  
+  res.json({ 
+    id: "1",
+    email: "user@example.com", 
+    name: "Test User",
+    role: "pregnant",
+    profilePhoto: null,
+    isProfileComplete: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+});
+
+app.put("/api/users/me", (req, res) => {
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  
+  res.json({ 
+    id: "1",
+    email: "user@example.com", 
+    name: req.body.name || "Test User",
+    role: "pregnant",
+    profilePhoto: null,
+    isProfileComplete: req.body.isProfileComplete || false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+});
+
+app.post("/api/users/upload-photo", (req, res) => {
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  
+  res.json({ 
+    profilePhoto: "https://via.placeholder.com/150",
+    message: "Photo uploaded successfully"
+  });
+});
+
+app.delete("/api/users/photo", (req, res) => {
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  
+  res.json({ 
+    profilePhoto: null,
+    message: "Photo deleted successfully"
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
