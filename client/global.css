@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * LIGHT MODE COLOR PALETTE
+   * Warm, feminine, and nurturing tones optimized for daytime usage
+   * Maintains the original brand identity with rose, lavender, sage, and peach
+   */
+  :root {
+    /* Core System Colors - Light Mode */
+    --background: 355 100% 97%;
+    --foreground: 341 75% 30%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 341 75% 30%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 341 75% 30%;
+
+    --primary: 349 89% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 100% 95%;
+    --secondary-foreground: 272 67% 39%;
+
+    --muted: 270 100% 95%;
+    --muted-foreground: 120 15% 65%;
+
+    --accent: 25 95% 90%;
+    --accent-foreground: 25 60% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 270 100% 92%;
+    --input: 270 100% 92%;
+    --ring: 349 89% 60%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar Colors - Light Mode */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+
+    /* Enhanced font rendering for dark mode */
+    font-feature-settings: "liga", "kern";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Smooth transitions for theme changes */
+  * {
+    transition:
+      background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
