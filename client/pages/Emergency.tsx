@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { API_BASE } from "@/lib/api";
 import {
   Card,
   CardContent,
@@ -85,7 +86,7 @@ export default function Emergency() {
   const findNearbyHospitals = async (lat: number, lng: number) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/hospitals/nearby?lat=${lat}&lng=${lng}&radius=50`);
+      const response = await fetch(`${API_BASE}/hospitals/nearby?lat=${lat}&lng=${lng}&radius=50`);
       if (!response.ok) {
         throw new Error('Failed to fetch hospitals');
       }
@@ -127,7 +128,7 @@ export default function Emergency() {
     setIsLoading(true);
     try {
       // Geocode the address using backend API
-      const response = await fetch('/api/hospitals/geocode', {
+      const response = await fetch(`${API_BASE}/hospitals/geocode`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

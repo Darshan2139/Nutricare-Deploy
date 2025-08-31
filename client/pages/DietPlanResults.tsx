@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { API_BASE } from "@/lib/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -62,7 +63,7 @@ export default function DietPlanResults() {
         return;
       }
 
-      const response = await fetch('/api/plans/save', {
+      const response = await fetch(`${API_BASE}/plans/save`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

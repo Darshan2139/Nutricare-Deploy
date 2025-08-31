@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { API_BASE } from "@/lib/api";
 import {
   Card,
   CardContent,
@@ -194,7 +195,7 @@ export default function ManualHealthEntryPage() {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch('/api/plans/generate', {
+      const response = await fetch(`${API_BASE}/plans/generate`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -225,7 +226,7 @@ export default function ManualHealthEntryPage() {
       // First, save the health entry to get its ID
       let healthEntryId = null;
       try {
-        const healthEntryResponse = await fetch('/api/health/entries', {
+        const healthEntryResponse = await fetch(`${API_BASE}/health/entries`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -249,7 +250,7 @@ export default function ManualHealthEntryPage() {
       // Then save the diet plan to the database
       if (healthEntryId) {
         try {
-          const saveResponse = await fetch('/api/plans/save', {
+          const saveResponse = await fetch(`${API_BASE}/plans/save`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
