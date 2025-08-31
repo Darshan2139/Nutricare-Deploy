@@ -92,7 +92,10 @@ export default function Emergency() {
       }
       const data = await response.json();
       console.log('Hospitals data received:', data);
-      setHospitals(data);
+      // Extract hospitals array from the response
+      const hospitalsArray = data.hospitals || data;
+      console.log('Hospitals array:', hospitalsArray);
+      setHospitals(hospitalsArray);
     } catch (error) {
       console.error('Error fetching hospitals:', error);
       toast.error('Failed to fetch hospitals. Please try again.');
