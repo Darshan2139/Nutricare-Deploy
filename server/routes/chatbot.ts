@@ -9,16 +9,23 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export const handleChatMessage: RequestHandler = async (req, res) => {
   try {
-    const userId = (req as AuthRequest).user?.id;
+    console.log("Chatbot request received:", req.body);
+    const userId = (req as AuthRequest).user?.id || "demo-user";
     const { message } = req.body as { message: string };
 
-    if (!message || !userId) {
+    console.log("User ID:", userId, "Message:", message);
+
+    if (!message) {
+      console.log("Missing message");
       return res.status(400).json({ error: "Message is required" });
     }
 
     const category = categorizeMessage(message);
+    console.log("Message category:", category);
+    
     // Allow pregnancy, nutrition, and lactation questions
     if (!(category === "pregnancy" || category === "nutrition" || category === "lactation")) {
+      console.log("Question not in allowed categories");
       return res.json({
         id: undefined,
         userId,
@@ -29,7 +36,9 @@ export const handleChatMessage: RequestHandler = async (req, res) => {
       });
     }
 
+    console.log("Calling Gemini API...");
     const response = await callGemini(message);
+    console.log("Gemini response:", response);
 
     const doc = await ChatMessageModel.create({
       userId: new mongoose.Types.ObjectId(userId),
@@ -38,6 +47,8 @@ export const handleChatMessage: RequestHandler = async (req, res) => {
       category,
       timestamp: new Date(),
     });
+
+    console.log("Chat message saved to database");
 
     res.json({
       id: String(doc._id),
@@ -75,7 +86,7 @@ export const handleGetChatHistory: RequestHandler = async (req, res) => {
   }
 };
 
-async function callGemini(prompt: string): Promise<string> {
+export async function callGemini(prompt: string): Promise<string> {
   // Enhanced prompt for accurate, concise nutrition advice
   const enhancedPrompt = `You are a certified nutrition expert specializing in pregnancy and lactation. Provide ONLY evidence-based, medically accurate information.
 

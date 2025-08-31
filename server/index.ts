@@ -9,7 +9,7 @@ import {
   handleLogout,
   handleGetProfile,
 } from "./routes/auth";
-import { handleChatMessage, handleGetChatHistory } from "./routes/chatbot";
+import { handleChatMessage, handleGetChatHistory, callGemini } from "./routes/chatbot";
 import {
   handleFindNearbyHospitals,
   handleGetHospitalDetails,
@@ -41,6 +41,26 @@ export function createServer() {
     res.json({ message: "OK" });
   });
 
+  // Test chatbot endpoint
+  app.post("/api/chatbot/test", async (req, res) => {
+    try {
+      const { message } = req.body;
+      console.log("Test chatbot request:", message);
+      
+      const response = await callGemini(message || "What foods are good for pregnancy?");
+      console.log("Test response:", response);
+      
+      res.json({ 
+        message: message || "What foods are good for pregnancy?",
+        response: response,
+        timestamp: new Date()
+      });
+    } catch (error) {
+      console.error("Test chatbot error:", error);
+      res.status(500).json({ error: "Test failed" });
+    }
+  });
+
   app.get("/api/demo", handleDemo);
 
   // Authentication routes
@@ -50,8 +70,8 @@ export function createServer() {
   app.get("/api/auth/profile", requireAuth, handleGetProfile);
 
   // Chatbot routes
-  app.post("/api/chatbot/message", requireAuth, handleChatMessage);
-  app.get("/api/chatbot/history/:userId", requireAuth, handleGetChatHistory);
+  app.post("/api/chatbot/message", handleChatMessage);
+  app.get("/api/chatbot/history/:userId", handleGetChatHistory);
 
   // Emergency/Hospital routes
   app.get("/api/hospitals/nearby", handleFindNearbyHospitals);
