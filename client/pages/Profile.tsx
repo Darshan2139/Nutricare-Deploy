@@ -124,7 +124,7 @@ export default function Profile() {
         dateOfBirth: userData.personalInfo?.dateOfBirth || "",
         emergencyContact: userData.personalInfo?.emergencyContact || "",
         bio: userData.personalInfo?.bio || "",
-        profilePhoto: userData.profilePhoto || "",
+        profilePhoto: userData.profilePhoto && !userData.profilePhoto.includes('placeholder') && !userData.profilePhoto.includes('via.placeholder') ? userData.profilePhoto : "",
       });
       
       setHealthData({
@@ -296,7 +296,7 @@ export default function Profile() {
             <CardHeader className="text-center">
               <div className="relative mx-auto mb-4">
                 <Avatar className="w-32 h-32 mx-auto">
-                  <AvatarImage src={profileData.profilePhoto} />
+                  <AvatarImage src={profileData.profilePhoto && !profileData.profilePhoto.includes('placeholder') && !profileData.profilePhoto.includes('via.placeholder') ? profileData.profilePhoto : undefined} />
                   <AvatarFallback className="bg-gradient-to-br from-rose-500 to-lavender-500 text-white text-2xl">
                     {user?.name?.charAt(0) || "U"}
                   </AvatarFallback>
