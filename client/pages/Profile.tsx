@@ -168,6 +168,9 @@ export default function Profile() {
       setProfileData(prev => ({ ...prev, profilePhoto: result.profilePhoto }));
       updateUser({ ...user, profilePhoto: result.profilePhoto });
       toast.success("Profile photo updated successfully!");
+      
+      // Refresh profile data to ensure UI is updated
+      await loadUserProfile();
     } catch (error) {
       console.error("Error uploading photo:", error);
       toast.error("Failed to upload photo. Please try again.");
@@ -185,6 +188,9 @@ export default function Profile() {
       updateUser({ ...user, profilePhoto: "" });
       toast.success("Profile photo deleted successfully!");
       setShowDeleteDialog(false);
+      
+      // Refresh profile data to ensure UI is updated
+      await loadUserProfile();
     } catch (error) {
       console.error("Error deleting photo:", error);
       toast.error("Failed to delete photo. Please try again.");
@@ -241,6 +247,9 @@ export default function Profile() {
       updateUser(updatedUser);
       setIsEditing(false);
       toast.success("Profile updated successfully!");
+      
+      // Refresh profile data to ensure UI is updated
+      await loadUserProfile();
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Failed to update profile. Please try again.");

@@ -91,6 +91,7 @@ export default function Emergency() {
         throw new Error('Failed to fetch hospitals');
       }
       const data = await response.json();
+      console.log('Hospitals data received:', data);
       setHospitals(data);
     } catch (error) {
       console.error('Error fetching hospitals:', error);
@@ -141,6 +142,7 @@ export default function Emergency() {
       }
 
       const coords = await response.json();
+      console.log('Geocoded coordinates:', coords);
       setUserLocation(coords);
       await findNearbyHospitals(coords.lat, coords.lng);
       toast.success("Searching for hospitals near your location...");
