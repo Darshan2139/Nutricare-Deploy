@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Badge } from "@/components/ui/badge";
 import { EnhancedNavbar } from "@/components/EnhancedNavbar";
+import { API_BASE } from "@/lib/api";
 
 interface Message {
   id: string;
@@ -106,7 +107,7 @@ export default function Chatbot() {
 
     try {
       const token = localStorage.getItem("auth_token");
-      const resp = await fetch("/api/chatbot/message", {
+      const resp = await fetch(`${API_BASE}/chatbot/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

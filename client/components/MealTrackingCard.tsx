@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, Clock, Apple } from "lucide-react";
+import { API_BASE } from "@/lib/api";
 import { toast } from "sonner";
 
 interface MealTrackingCardProps {
@@ -35,7 +36,7 @@ export function MealTrackingCard({
         return;
       }
 
-      const response = await fetch('/api/analytics/meals/complete', {
+      const response = await fetch(`${API_BASE}/analytics/meals/complete`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

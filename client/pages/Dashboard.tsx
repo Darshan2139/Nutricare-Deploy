@@ -31,6 +31,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSearchParams } from "react-router-dom";
 import { EnhancedNavbar } from "@/components/EnhancedNavbar";
+import { API_BASE } from "@/lib/api";
 import { downloadDietPlan, downloadDietPlanAsText } from "@/utils/dietPlanPDF";
 import { toast } from "sonner";
 
@@ -77,7 +78,7 @@ export default function Dashboard() {
         return;
       }
 
-      const response = await fetch('/api/analytics/dashboard', {
+      const response = await fetch(`${API_BASE}/analytics/dashboard`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -122,7 +123,7 @@ export default function Dashboard() {
       const token = localStorage.getItem('auth_token');
       if (!token) return;
 
-      const response = await fetch(`/api/analytics/meals/tracking?planId=${planId}`, {
+      const response = await fetch(`${API_BASE}/analytics/meals/tracking?planId=${planId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -185,7 +186,7 @@ export default function Dashboard() {
 
       const planId = dashboardData.latestPlan._id || dashboardData.latestPlan.id;
       
-      const response = await fetch('/api/analytics/meals/complete', {
+      const response = await fetch(`${API_BASE}/analytics/meals/complete`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
