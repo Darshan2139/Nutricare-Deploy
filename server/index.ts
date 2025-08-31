@@ -31,10 +31,31 @@ export function createServer() {
     console.error("Failed to connect MongoDB", e);
   });
 
-  // Middleware
-  app.use(cors());
+  // CORS configuration
+  const corsOptions = {
+    origin: [
+      'https://nutricare-ai.vercel.app',
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'http://localhost:4173'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  };
+  
+  app.use(cors(corsOptions));
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true }));
+
+  // Handle preflight requests
+  app.options('*', cors(corsOptions));
+
+  // Debug middleware to log all requests
+  app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin}`);
+    next();
+  });
 
   // Health check
   app.get("/api/ping", (_req, res) => {
