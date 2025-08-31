@@ -2,8 +2,10 @@ import { RequestHandler } from "express";
 import ChatMessageModel from "../models/ChatMessage";
 import { AuthRequest } from "../middleware/auth";
 import mongoose from "mongoose";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyBgqcTUb9JMiYC_pq2A41hjBP3s9a615UE";
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "AIzaSyBgqcTUb9JMiYC_pq2A41hjBP3s9a615UE");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export const handleChatMessage: RequestHandler = async (req, res) => {
   try {
@@ -85,31 +87,26 @@ CRITICAL GUIDELINES:
 5. Focus on safety and evidence-based recommendations
 6. Avoid speculation or unproven claims
 7. Be direct and factual - no lengthy explanations
+8. ALWAYS provide a helpful response - never say "I can't help" or similar
 
 User question: ${prompt}
 
 Provide a brief, accurate response (2-3 lines only):`;
 
   try {
-    const body = {
-      contents: [
-        {
-          parts: [{ text: enhancedPrompt }],
-        },
-      ],
-    };
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    } as any);
-    const data = await resp.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    return text || "Sorry, I couldn't generate a response right now.";
+    const result = await model.generateContent(enhancedPrompt);
+    const response = await result.response;
+    const text = response.text();
+    
+    // Ensure we always return a helpful response
+    if (!text || text.trim().length === 0) {
+      return "**For personalized advice**, consult your healthcare provider. **I provide general guidance only** based on evidence-based nutrition information.";
+    }
+    
+    return text;
   } catch (e) {
     console.error("Gemini error", e);
-    return "Sorry, I couldn't generate a response right now.";
+    return "**For personalized advice**, consult your healthcare provider. **I provide general guidance only** based on evidence-based nutrition information.";
   }
 }
 
